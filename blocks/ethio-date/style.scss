@@ -1,0 +1,99 @@
+.wp-block-ethio-cal-ethiopian-date {
+    font-variant-numeric: tabular-nums;
+
+    // Editor canvas: light affordance so authors can see the block boundary.
+    .editor-styles-wrapper & {
+        outline: 1px dashed #ccd0d4;
+        padding: 0.4em 0.75em;
+        min-height: 2em;
+    }
+}
+
+// ── Date picker (editor canvas only) ─────────────────────────────────────────
+
+.ethio-cal-picker {
+    font-size: 13px;
+
+    &__toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+
+    &__ec,
+    &__gc {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    // Make the WP TextControl / SelectControl fields slightly more compact
+    // inside the picker so they don't dominate the canvas.
+    &__ec .components-base-control,
+    &__gc .components-base-control {
+        margin-bottom: 4px;
+    }
+
+    // Native date input styled to match @wordpress/components TextControl
+    &__gc-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #1e1e1e;
+        margin-bottom: 4px;
+    }
+
+    &__gc-input {
+        display: block;
+        width: 100%;
+        padding: 6px 8px;
+        border: 1px solid #757575;
+        border-radius: 2px;
+        font-size: 13px;
+        line-height: 1.5;
+        font-family: inherit;
+        color: inherit;
+        background: #fff;
+        box-sizing: border-box;
+
+        &:focus {
+            outline: 2px solid var(--wp-admin-theme-color, #3858e9);
+            outline-offset: -1px;
+            border-color: transparent;
+        }
+    }
+
+    // GC equivalent label / EC equivalent label
+    &__equiv {
+        margin: 6px 0 0;
+        color: #646970;
+        font-size: 12px;
+        min-height: 1.4em; // reserve space to avoid layout jump
+
+        abbr {
+            text-decoration: none;
+            border-bottom: 1px dotted currentColor;
+            cursor: help;
+        }
+
+        .components-spinner {
+            margin: 0;
+            vertical-align: middle;
+        }
+    }
+
+    &__today-label {
+        color: #646970;
+        font-size: 12px;
+        margin: 4px 0 0;
+    }
+
+    &__error {
+        color: #cc1818;
+        font-size: 12px;
+        margin: 0 0 8px;
+    }
+}

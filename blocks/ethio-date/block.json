@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "ethio-cal/ethiopian-date",
+    "version": "1.0.0",
+    "title": "Ethiopian Date",
+    "category": "text",
+    "icon": "calendar-alt",
+    "description": "Display a date in the Ethiopian (Ge'ez) calendar.",
+    "keywords": [ "ethiopian", "calendar", "date", "geez", "amharic" ],
+    "textdomain": "ethio-cal",
+    "attributes": {
+        "ethiopianYear":  { "type": "integer", "default": 0 },
+        "ethiopianMonth": { "type": "integer", "default": 0 },
+        "ethiopianDay":   { "type": "integer", "default": 0 },
+        "language":       { "type": "string",  "default": "" },
+        "numerals":       { "type": "string",  "default": "" },
+        "format":         { "type": "string",  "default": "" }
+    },
+    "supports": {
+        "html": false,
+        "color": { "text": true, "background": true },
+        "typography": { "fontSize": true }
+    },
+    "editorScript": "file:../../build/index.js",
+    "style":        "file:../../build/style-index.css"
+}

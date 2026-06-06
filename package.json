@@ -1,0 +1,16 @@
+{
+    "name": "ethio-cal",
+    "version": "1.0.0",
+    "description": "Ethiopian calendar WordPress plugin block assets",
+    "private": true,
+    "scripts": {
+        "build": "wp-scripts build blocks/ethio-date/index.js --output-path=build",
+        "start": "wp-scripts start blocks/ethio-date/index.js --output-path=build"
+    },
+    "devDependencies": {
+        "@wordpress/scripts": "^30.0.0"
+    },
+    "dependencies": {
+        "kenat": "^2.0.0"
+    }
+}

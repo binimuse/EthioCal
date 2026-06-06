@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php --version)",
+      "Bash(composer --version)",
+      "Bash(npm --version)",
+      "Bash(brew list *)",
+      "Read(//opt/homebrew/bin/**)",
+      "Read(//usr/local/bin/**)",
+      "Read(//opt/homebrew/Cellar/**)",
+      "Bash(brew install *)",
+      "Bash(mkdir -p /Users/mac/ethio-cal/src/Converter /Users/mac/ethio-cal/src/Blocks /Users/mac/ethio-cal/src/Shortcodes /Users/mac/ethio-cal/src/Admin /Users/mac/ethio-cal/src/Rest /Users/mac/ethio-cal/blocks/ethio-date /Users/mac/ethio-cal/languages /Users/mac/ethio-cal/tests /Users/mac/ethio-cal/.github/workflows && echo \"dirs created\")",
+      "Bash(composer install *)",
+      "Bash(php vendor/bin/phpunit)",
+      "Bash(php vendor/bin/phpunit --display-warnings)",
+      "Bash(npm install *)",
+      "Bash(php -r ' *)",
+      "Bash(npm run *)",
+      "Bash(npx @wordpress/babel-plugin-makepot --help)",
+      "Bash(xgettext --version)",
+      "Bash(wp i18n *)",
+      "Bash(msgfmt /Users/mac/ethio-cal/languages/ethio-cal-am_ET.po -o /Users/mac/ethio-cal/languages/ethio-cal-am_ET.mo)",
+      "Bash(npm ci *)",
+      "Bash(composer lint *)",
+      "Bash(grep -v \"PHPCS\\\\|PHPCSF\\\\|FOUND\\\\|^$\")",
+      "Bash(vendor/bin/phpcbf)",
+      "Bash(grep -v \"^$\")",
+      "Bash(composer test *)",
+      "Bash(docker info *)"
+    ],
+    "additionalDirectories": [
+      "/Users/mac/ethio-cal/src"
+    ]
+  }
+}

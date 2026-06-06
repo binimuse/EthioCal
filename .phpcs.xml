@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<ruleset name="EthioCal">
+    <!--
+        WordPress security + i18n rules enforced.
+        PSR-4 code style (4-space indent, camelCase, short arrays) allowed.
+    -->
+
+    <file>src/</file>
+    <file>ethio-cal.php</file>
+    <exclude-pattern>*/tests/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/build/*</exclude-pattern>
+
+    <arg name="colors"/>
+    <arg value="sp"/>
+    <arg name="extensions" value="php"/>
+
+    <rule ref="WordPress">
+
+        <!-- ── File layout ──────────────────────────────────────────────────── -->
+        <!-- PSR-4: files are named after the class (DateBlock.php, not
+             class-date-block.php). Renaming would break autoloading. -->
+        <exclude name="WordPress.Files.FileName"/>
+
+        <!-- ── Indentation ──────────────────────────────────────────────────── -->
+        <!-- We use 4-space indentation throughout; tabs would require a full
+             reformatting of every file. -->
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+        <!-- Disable the tab-based scope indentation sniff entirely; the
+             space-based version is added back below. -->
+        <exclude name="Generic.WhiteSpace.ScopeIndent"/>
+
+        <!-- ── Array syntax ─────────────────────────────────────────────────── -->
+        <!-- Short array syntax [] is idiomatic in PHP 5.4+ and used throughout. -->
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+
+        <!-- ── Naming conventions ───────────────────────────────────────────── -->
+        <!-- PSR-4 uses camelCase method names; renaming would change every call
+             site and break tests. -->
+        <exclude name="WordPress.NamingConventions.ValidFunctionName"/>
+        <exclude name="WordPress.NamingConventions.ValidVariableName"/>
+
+        <!-- ── Doc comments ─────────────────────────────────────────────────── -->
+        <!-- We use targeted doc comments where the why is non-obvious, not
+             exhaustive docblocks on every method. -->
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+        <exclude name="Squiz.Commenting.ClassComment.Missing"/>
+        <exclude name="Squiz.Commenting.FunctionComment.Missing"/>
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
+        <exclude name="Squiz.Commenting.FunctionComment.MissingReturn"/>
+        <exclude name="Squiz.Commenting.FunctionComment.ParamNameNoMatch"/>
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName"/>
+        <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+        <exclude name="Generic.Commenting.DocComment.NonParamGroup"/>
+        <exclude name="Generic.Commenting.DocComment.ParamNotFirst"/>
+        <exclude name="Generic.Commenting.DocComment.TagValueIndent"/>
+        <exclude name="Squiz.Commenting.VariableComment.Missing"/>
+
+        <!-- ── Inline comments ──────────────────────────────────────────────── -->
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+        <exclude name="Squiz.Commenting.InlineComment.NoSpaceBefore"/>
+
+        <!-- ── Yoda conditions ──────────────────────────────────────────────── -->
+        <!-- We write natural-order conditions ($var === 'value'). -->
+        <exclude name="WordPress.PHP.YodaConditions"/>
+
+        <!-- ── Function comment style ───────────────────────────────────────── -->
+        <!-- We use // inline comments above methods, not full /** docblocks. -->
+        <exclude name="Squiz.Commenting.FunctionComment.WrongStyle"/>
+        <exclude name="Squiz.Commenting.FunctionCommentThrowTag.Missing"/>
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+
+        <!-- ── Exception output ─────────────────────────────────────────────── -->
+        <!-- WPCS flags exception message strings as potential unescaped output.
+             Exception messages are developer-facing, not user-facing output. -->
+        <exclude name="WordPress.Security.EscapeOutput.ExceptionNotEscaped"/>
+
+        <!-- ── Short ternary (?:) ───────────────────────────────────────────── -->
+        <!-- We use ?. sparingly and correctly; false positives are too frequent. -->
+        <exclude name="Universal.Operators.DisallowShortTernary"/>
+
+        <!-- ── Mixed file (class + procedural helpers) ──────────────────────── -->
+        <!-- Api.php deliberately ships both an Api class and ethio_cal_*()
+             procedural wrappers for theme/plugin authors — standard WP pattern. -->
+        <exclude name="PSR1.Files.SideEffects"/>
+        <exclude name="Universal.Files.SeparateFunctionsFromOO"/>
+
+        <!-- ── PHP 8+ features ──────────────────────────────────────────────── -->
+        <!-- Constructor property promotion, named args, readonly — all PHP 8. -->
+        <exclude name="Universal.Classes.RequireAnonClassParentheses"/>
+
+    </rule>
+
+    <!-- Enforce 4-space indentation (replaces the excluded tab-based sniff). -->
+    <rule ref="Generic.WhiteSpace.ScopeIndent">
+        <properties>
+            <property name="indent" value="4"/>
+            <property name="tabIndent" value="false"/>
+        </properties>
+    </rule>
+
+</ruleset>

@@ -1,0 +1,5 @@
+{
+    "plugins": [ "." ],
+    "themes": [ "https://downloads.wordpress.org/theme/twentytwentyfour.1.2.zip" ],
+    "phpVersion": "8.2"
+}
