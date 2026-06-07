@@ -11,7 +11,7 @@
  * Text Domain: ethio-cal
  * Domain Path: /languages
  * Requires at least: 6.0
- * Requires PHP: 8.0
+ * Requires PHP: 8.1
  */
 
 defined( 'ABSPATH' ) || exit;

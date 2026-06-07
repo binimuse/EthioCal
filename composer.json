@@ -3,7 +3,7 @@
     "description": "Ethiopian (Ge'ez) calendar WordPress plugin",
     "type": "wordpress-plugin",
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "andegna/calender": "^1.0"
     },
     "require-dev": {
