@@ -1,16 +1,16 @@
 /**
  * EthiopianDatePicker — block canvas component.
  *
- * Three modes:
- *   EC   – author picks year / month / day directly in the Ethiopian calendar.
- *          Day options update instantly via local leap-year logic (kenat algorithm).
- *          The GC equivalent is fetched async from /ethio-cal/v1/convert.
- *   GC   – author picks from a native Gregorian date input.
- *          REST gc-to-ec conversion is authoritative; result is committed to attrs.
- *   Today – year/month/day stored as 0; PHP render_callback resolves at runtime.
+ * Three explicit modes (stored in local state, not derived from year===0):
+ *   'today' – year/month/day stored as 0; PHP render_callback resolves at runtime.
+ *   'ec'    – author picks year / month / day in the Ethiopian calendar.
+ *   'gc'    – author picks from a native Gregorian date input.
  *
- * All EC↔GC conversions that affect block attributes go through the REST
- * endpoint so the PHP conversion logic stays server-authoritative.
+ * Clicking "Ethiopian (EC)" from Today mode seeds a default date (2017-01-01)
+ * so the inputs are immediately populated and usable.
+ *
+ * All EC↔GC conversions that update block attributes go through the REST
+ * endpoint so PHP conversion logic stays server-authoritative.
  */
 
 import { useState, useEffect } from '@wordpress/element';
@@ -21,21 +21,16 @@ import {
     Button,
     Spinner,
 } from '@wordpress/components';
-import apiFetch   from '@wordpress/api-fetch';
-import { monthNames } from 'kenat'; // monthNames.english / monthNames.amharic
+import apiFetch          from '@wordpress/api-fetch';
+import { monthNames }    from 'kenat';
 
 // ── Local calendar helpers (same algorithm as PHP EthiopianDate) ──────────────
 
-/** Ethiopian leap year: year % 4 === 3. */
-const isEcLeapYear = ( y ) => y % 4 === 3;
-
-/** Days in an Ethiopian month (30 for months 1-12; 5 or 6 for Pagumé). */
-const ecDaysInMonth = ( y, m ) =>
-    m === 13 ? ( isEcLeapYear( y ) ? 6 : 5 ) : 30;
+const isEcLeapYear  = ( y ) => y % 4 === 3;
+const ecDaysInMonth = ( y, m ) => m === 13 ? ( isEcLeapYear( y ) ? 6 : 5 ) : 30;
 
 // ── Static lookup tables ───────────────────────────────────────────────────────
 
-/** 1-indexed month options built from kenat's English month names. */
 const EC_MONTH_OPTIONS = monthNames.english.map( ( name, i ) => ( {
     label: `${ name } (${ i + 1 })`,
     value: i + 1,
@@ -49,7 +44,7 @@ function makeDayOptions( year, month ) {
     } ) );
 }
 
-// ── REST helpers ───────────────────────────────────────────────────────────────
+// ── REST path helpers ──────────────────────────────────────────────────────────
 
 function ecPath( y, m, d ) {
     const pad = ( n ) => String( n ).padStart( 2, '0' );
@@ -65,20 +60,22 @@ function gcPath( dateStr ) {
 export function EthiopianDatePicker( { attributes, setAttributes } ) {
     const { ethiopianYear, ethiopianMonth, ethiopianDay } = attributes;
 
-    const [ mode,       setMode       ] = useState( 'ec' );
-    // GC date string matching the stored EC attrs (shown as a label in EC mode)
+    // Derive initial mode from saved attributes: a stored date means EC mode.
+    const [ mode,       setMode       ] = useState( () => ethiopianYear > 0 ? 'ec' : 'today' );
     const [ gcEquiv,    setGcEquiv    ] = useState( '' );
-    // Controlled value for the GC <input type="date">
     const [ gcInput,    setGcInput    ] = useState( '' );
     const [ converting, setConverting ] = useState( false );
     const [ error,      setError      ] = useState( null );
 
-    const isToday  = ! ethiopianYear;
+    // curYear/Month/Day: safe display values used for selects / REST paths.
     const curYear  = ethiopianYear  || 2017;
     const curMonth = ethiopianMonth || 1;
     const curDay   = ethiopianDay   || 1;
 
-    // ── Fetch GC equivalent whenever the stored EC date is a real date ────────
+    // Whether the "Today" button should appear active.
+    const isToday = ! ethiopianYear;
+
+    // ── Fetch GC equivalent whenever the stored EC date changes ───────────────
     useEffect( () => {
         if ( ! ethiopianYear ) {
             setGcEquiv( '' );
@@ -94,35 +91,54 @@ export function EthiopianDatePicker( { attributes, setAttributes } ) {
                 setGcEquiv( res.gregorian );
                 setConverting( false );
             } )
-            .catch( () => {
-                if ( ! cancelled ) setConverting( false );
-            } );
-        return () => {
-            cancelled = true;
-            setConverting( false );
-        };
+            .catch( () => { if ( ! cancelled ) setConverting( false ); } );
+        return () => { cancelled = true; setConverting( false ); };
     }, [ ethiopianYear, ethiopianMonth, ethiopianDay ] ); // eslint-disable-line
 
-    // Pre-populate the GC input when switching into GC mode
+    // Pre-populate the GC input when switching into GC mode.
     useEffect( () => {
         if ( mode === 'gc' && gcEquiv ) {
             setGcInput( gcEquiv );
         }
     }, [ mode ] ); // eslint-disable-line
 
-    // ── EC mode handlers ──────────────────────────────────────────────────────
+    // ── Toolbar handlers ──────────────────────────────────────────────────────
+
+    function switchToEc() {
+        // If no date is stored yet, seed 1 Meskerem 2017 so the fields are
+        // immediately populated and the author can start editing from there.
+        if ( ! ethiopianYear ) {
+            setAttributes( { ethiopianYear: 2017, ethiopianMonth: 1, ethiopianDay: 1 } );
+        }
+        setMode( 'ec' );
+    }
+
+    function switchToGc() {
+        setMode( 'gc' );
+    }
+
+    function switchToToday() {
+        setAttributes( { ethiopianYear: 0, ethiopianMonth: 0, ethiopianDay: 0 } );
+        setGcEquiv( '' );
+        setGcInput( '' );
+        setMode( 'today' );
+    }
+
+    // ── EC field handlers ─────────────────────────────────────────────────────
 
     function onYearChange( raw ) {
         const y = parseInt( raw, 10 ) || 0;
         if ( y > 0 ) {
-            const maxDay = ecDaysInMonth( y, curMonth );
+            const m      = ethiopianMonth || 1;   // preserve or default to 1
+            const maxDay = ecDaysInMonth( y, m );
             setAttributes( {
-                ethiopianYear: y,
-                ethiopianDay:  Math.min( curDay, maxDay ),
+                ethiopianYear:  y,
+                ethiopianMonth: m,
+                ethiopianDay:   Math.min( ethiopianDay || 1, maxDay ),
             } );
         } else {
-            // Empty field → switch to Today mode
-            setAttributes( { ethiopianYear: 0, ethiopianMonth: 0, ethiopianDay: 0 } );
+            // Cleared → fall back to Today mode.
+            switchToToday();
         }
     }
 
@@ -139,7 +155,7 @@ export function EthiopianDatePicker( { attributes, setAttributes } ) {
         setAttributes( { ethiopianDay: parseInt( raw, 10 ) } );
     }
 
-    // ── GC mode handler ───────────────────────────────────────────────────────
+    // ── GC handler ────────────────────────────────────────────────────────────
 
     async function onGcInputChange( val ) {
         setGcInput( val );
@@ -161,16 +177,7 @@ export function EthiopianDatePicker( { attributes, setAttributes } ) {
         }
     }
 
-    // ── Today handler ─────────────────────────────────────────────────────────
-
-    function onTodayClick() {
-        setAttributes( { ethiopianYear: 0, ethiopianMonth: 0, ethiopianDay: 0 } );
-        setGcEquiv( '' );
-        setGcInput( '' );
-        setMode( 'ec' );
-    }
-
-    // ── Derived UI values ─────────────────────────────────────────────────────
+    // ── Derived UI ────────────────────────────────────────────────────────────
 
     const dayOptions = makeDayOptions( curYear, curMonth );
 
@@ -192,35 +199,34 @@ export function EthiopianDatePicker( { attributes, setAttributes } ) {
                 aria-label={ __( 'Date input mode', 'ethio-cal' ) }
             >
                 <Button
-                    variant={ ! isToday && mode === 'ec' ? 'primary' : 'secondary' }
+                    variant={ mode === 'ec' ? 'primary' : 'secondary' }
                     size="small"
-                    onClick={ () => setMode( 'ec' ) }
+                    onClick={ switchToEc }
                 >
                     { __( 'Ethiopian (EC)', 'ethio-cal' ) }
                 </Button>
                 <Button
-                    variant={ ! isToday && mode === 'gc' ? 'primary' : 'secondary' }
+                    variant={ mode === 'gc' ? 'primary' : 'secondary' }
                     size="small"
-                    onClick={ () => setMode( 'gc' ) }
+                    onClick={ switchToGc }
                 >
                     { __( 'Gregorian (GC)', 'ethio-cal' ) }
                 </Button>
                 <Button
                     variant={ isToday ? 'primary' : 'tertiary' }
                     size="small"
-                    onClick={ onTodayClick }
+                    onClick={ switchToToday }
                 >
                     { __( 'Today', 'ethio-cal' ) }
                 </Button>
             </div>
 
-            { /* ── Error notice ── */ }
             { error && (
                 <p className="ethio-cal-picker__error" role="alert">{ error }</p>
             ) }
 
             { /* ── Today mode ── */ }
-            { isToday && (
+            { mode === 'today' && (
                 <p className="ethio-cal-picker__today-label">
                     <em>
                         { __( "Displays today's Ethiopian date at render time.", 'ethio-cal' ) }
@@ -229,7 +235,7 @@ export function EthiopianDatePicker( { attributes, setAttributes } ) {
             ) }
 
             { /* ── EC input mode ── */ }
-            { ! isToday && mode === 'ec' && (
+            { mode === 'ec' && (
                 <div className="ethio-cal-picker__ec">
                     <TextControl
                         label={ __( 'Year (EC)', 'ethio-cal' ) }
@@ -256,16 +262,20 @@ export function EthiopianDatePicker( { attributes, setAttributes } ) {
                     <p className="ethio-cal-picker__equiv" aria-live="polite">
                         { converting
                             ? <Spinner />
-                            : gcEquiv && <>{ `= ${ gcEquiv }` } <abbr title={ __( 'Gregorian Calendar', 'ethio-cal' ) }>GC</abbr></>
+                            : gcEquiv && (
+                                <>
+                                    { `= ${ gcEquiv }` }{ ' ' }
+                                    <abbr title={ __( 'Gregorian Calendar', 'ethio-cal' ) }>GC</abbr>
+                                </>
+                            )
                         }
                     </p>
                 </div>
             ) }
 
             { /* ── GC input mode ── */ }
-            { ! isToday && mode === 'gc' && (
+            { mode === 'gc' && (
                 <div className="ethio-cal-picker__gc">
-                    { /* Native date input styled to match WP Components */ }
                     <label
                         className="ethio-cal-picker__gc-label components-base-control__label"
                         htmlFor="ethio-cal-gc-date"
