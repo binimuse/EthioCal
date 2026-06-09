@@ -18,7 +18,7 @@ class Plugin {
     }
 
     public function load_textdomain(): void {
-        load_plugin_textdomain( 'ethio-cal', false, dirname( plugin_basename( __FILE__ ), 2 ) . '/languages' );
+        load_plugin_textdomain( 'binimuse-geez-calendar', false, dirname( plugin_basename( __FILE__ ), 2 ) . '/languages' );
     }
 
     public function register_shortcodes(): void {

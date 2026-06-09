@@ -31,7 +31,13 @@
       "Bash(composer show *)",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('PHPUnit requires:', d.get\\('require',{}\\).get\\('php','?'\\)\\)\")",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('PHPCS requires:', d.get\\('require',{}\\).get\\('php','?'\\)\\)\")",
-      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('andegna requires:', d.get\\('require',{}\\).get\\('php','?'\\)\\)\")"
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('andegna requires:', d.get\\('require',{}\\).get\\('php','?'\\)\\)\")",
+      "Bash(msgfmt /Users/mac/ethio-cal/languages/binimuse-geez-calendar-am_ET.po -o /Users/mac/ethio-cal/languages/binimuse-geez-calendar-am_ET.mo)",
+      "Bash(rm -rf /tmp/binimuse-geez-calendar)",
+      "Bash(rsync -a --exclude=.git --exclude=node_modules --exclude=tests --exclude=*.zip --exclude=.phpunit.result.cache --exclude=phpunit.result.cache --exclude=phpunit.xml --exclude=.phpcs.xml --exclude=.wp-env.json --exclude=package.json --exclude=package-lock.json --exclude=.gitignore --exclude=README.md --exclude=conversion-blog-post-outline.md --exclude=.claude /Users/mac/ethio-cal/ /tmp/binimuse-geez-calendar/)",
+      "Read(//private/tmp/**)",
+      "Bash(zip -r /Users/mac/ethio-cal/binimuse-geez-calendar.zip binimuse-geez-calendar/)",
+      "Bash(unzip -l /Users/mac/ethio-cal/binimuse-geez-calendar.zip)"
     ],
     "additionalDirectories": [
       "/Users/mac/ethio-cal/src"

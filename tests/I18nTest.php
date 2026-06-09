@@ -123,14 +123,14 @@ class I18nTest extends TestCase {
     // =========================================================================
 
     public function test_pot_file_exists(): void {
-        $this->assertFileExists( self::$root . '/languages/ethio-cal.pot' );
+        $this->assertFileExists( self::$root . '/languages/binimuse-geez-calendar.pot' );
     }
 
     /** The .pot must carry the correct domain header and include key strings. */
     public function test_pot_file_has_correct_domain_and_key_strings(): void {
-        $pot = (string) file_get_contents( self::$root . '/languages/ethio-cal.pot' );
+        $pot = (string) file_get_contents( self::$root . '/languages/binimuse-geez-calendar.pot' );
 
-        $this->assertStringContainsString( 'X-Domain: ethio-cal', $pot );
+        $this->assertStringContainsString( 'X-Domain: binimuse-geez-calendar', $pot );
 
         $required = [
             'EthioCal Settings',
@@ -154,12 +154,12 @@ class I18nTest extends TestCase {
     }
 
     public function test_amharic_po_file_exists(): void {
-        $this->assertFileExists( self::$root . '/languages/ethio-cal-am_ET.po' );
+        $this->assertFileExists( self::$root . '/languages/binimuse-geez-calendar-am_ET.po' );
     }
 
     /** The .po must declare Language: am_ET and contain real Ethiopic text. */
     public function test_amharic_po_has_correct_headers_and_translations(): void {
-        $po = (string) file_get_contents( self::$root . '/languages/ethio-cal-am_ET.po' );
+        $po = (string) file_get_contents( self::$root . '/languages/binimuse-geez-calendar-am_ET.po' );
 
         $this->assertStringContainsString( '"Language: am_ET\n"', $po );
         $this->assertStringContainsString( '"Content-Type: text/plain; charset=UTF-8\n"', $po );
@@ -174,16 +174,16 @@ class I18nTest extends TestCase {
 
     /** Every msgid from the .pot must have a non-empty msgstr in the .po. */
     public function test_amharic_po_translates_all_pot_msgids(): void {
-        $pot = (string) file_get_contents( self::$root . '/languages/ethio-cal.pot' );
-        $po  = (string) file_get_contents( self::$root . '/languages/ethio-cal-am_ET.po' );
+        $pot = (string) file_get_contents( self::$root . '/languages/binimuse-geez-calendar.pot' );
+        $po  = (string) file_get_contents( self::$root . '/languages/binimuse-geez-calendar-am_ET.po' );
 
         // Extract msgids from the .pot that are not plugin metadata (URI / Author).
         preg_match_all( '/^msgid "(.+)"$/m', $pot, $potHits );
         $untranslatable = [
-            'https://github.com/binimusema/ethio-cal',
-            'https://wordpress.org/support/plugin/ethio-cal',
+            'https://github.com/binimuse/EthioCal',
+            'https://wordpress.org/support/plugin/binimuse-geez-calendar',
             'Bini Musema',
-            'https://github.com/binimusema',
+            'https://github.com/binimuse',
         ];
 
         // Extract msgid → msgstr pairs from .po
@@ -215,12 +215,12 @@ class I18nTest extends TestCase {
     }
 
     public function test_amharic_mo_file_exists(): void {
-        $this->assertFileExists( self::$root . '/languages/ethio-cal-am_ET.mo' );
+        $this->assertFileExists( self::$root . '/languages/binimuse-geez-calendar-am_ET.mo' );
     }
 
     /** The .mo must be a valid binary MO file (magic number check). */
     public function test_amharic_mo_file_is_valid_binary(): void {
-        $mo = (string) file_get_contents( self::$root . '/languages/ethio-cal-am_ET.mo' );
+        $mo = (string) file_get_contents( self::$root . '/languages/binimuse-geez-calendar-am_ET.mo' );
 
         // MO files start with either LE (0x950412de) or BE (0xde120495) magic number.
         $magic = unpack( 'V', substr( $mo, 0, 4 ) )[1];

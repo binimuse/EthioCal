@@ -24,7 +24,7 @@
     "scripts": {
         "test": "phpunit",
         "lint": "phpcs",
-        "i18n": "wp i18n make-pot . languages/ethio-cal.pot --domain=ethio-cal --exclude=vendor,node_modules,build,tests --package-name=EthioCal"
+        "i18n": "wp i18n make-pot . languages/binimuse-geez-calendar.pot --domain=binimuse-geez-calendar --exclude=vendor,node_modules,build,tests --package-name=\"Binimuse Geez Calendar\""
     },
     "config": {
         "allow-plugins": {

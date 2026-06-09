@@ -1,4 +1,4 @@
-=== EthioCal — Ethiopian Calendar ===
+=== Binimuse Geʽez Calendar ===
 Contributors: binimuse
 Tags: ethiopian calendar, geez, amharic, calendar, date converter
 Requires at least: 6.0
@@ -29,7 +29,7 @@ Conversion uses the well-established Beyene-Kudlek algorithm via Julian Day Numb
 
 == Installation ==
 
-1. Upload the `ethio-cal` folder to `/wp-content/plugins/`, or install through Plugins → Add New.
+1. Upload the `binimuse-geez-calendar` folder to `/wp-content/plugins/`, or install through Plugins → Add New.
 2. Activate the plugin through the Plugins menu.
 3. Set your defaults under Settings → EthioCal.
 4. Add the **Ethiopian Date** block in the editor, or use the `[ethio_date]` shortcode.

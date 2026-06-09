@@ -108,7 +108,7 @@ class ConvertController extends WP_REST_Controller {
         } catch ( InvalidArgumentException $e ) {
             return new WP_Error(
                 'invalid_date',
-                __( 'The provided date is not valid.', 'ethio-cal' ),
+                __( 'The provided date is not valid.', 'binimuse-geez-calendar' ),
                 [ 'status' => 400 ],
             );
         }
@@ -132,7 +132,7 @@ class ConvertController extends WP_REST_Controller {
         if ( ! is_string( $value ) || ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $value ) ) {
             return new WP_Error(
                 'invalid_date_format',
-                __( 'date must be in YYYY-MM-DD format.', 'ethio-cal' ),
+                __( 'date must be in YYYY-MM-DD format.', 'binimuse-geez-calendar' ),
                 [ 'status' => 400 ],
             );
         }
