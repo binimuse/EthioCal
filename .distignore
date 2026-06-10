@@ -1,0 +1,36 @@
+# Files and directories excluded from the distribution zip.
+# Used by wp dist-archive and the release build script.
+
+.distignore
+.git
+.gitignore
+.github
+.claude
+bin
+.phpcs.xml
+.wp-env.json
+assets
+blocks
+composer.lock
+conversion-blog-post-outline.md
+ethio-cal.zip
+binimuse-geez-calendar.zip
+node_modules
+package.json
+package-lock.json
+.phpunit.result.cache
+phpunit.xml
+README.md
+tests
+vendor/bin
+vendor/squizlabs
+vendor/staabm
+vendor/phpunit
+vendor/nikic
+vendor/sebastian
+vendor/myclabs
+vendor/phar-io
+vendor/theseer
+vendor/dealerdirect
+vendor/phpcsstandards
+vendor/wp-coding-standards

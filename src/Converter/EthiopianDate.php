@@ -2,7 +2,8 @@
 
 namespace EthioCal\Converter;
 
-use Andegna\Calender;
+use Andegna\Converter\FromJdnConverter;
+use Andegna\Converter\ToJdnConverter;
 use DateTimeImmutable;
 use DateTimeZone;
 use InvalidArgumentException;
@@ -10,7 +11,7 @@ use InvalidArgumentException;
 /**
  * Value object representing an Ethiopian calendar date.
  *
- * All conversion flows through this class — never call Andegna\Calender
+ * All conversion flows through this class — never use Andegna\Converter\*
  * directly from outside this file.
  */
 final class EthiopianDate {
@@ -42,13 +43,13 @@ final class EthiopianDate {
      * Create from a Gregorian DateTimeImmutable.
      */
     public static function fromGregorian( DateTimeImmutable $gregorian ): self {
-        $jdn   = self::gregorianToJdn(
+        $jdn  = self::gregorianToJdn(
             (int) $gregorian->format( 'n' ),
             (int) $gregorian->format( 'j' ),
             (int) $gregorian->format( 'Y' ),
         );
-        $parts = Calender::jdToEthiopian( $jdn, true );
-        return new self( (int) $parts['year'], (int) $parts['month'], (int) $parts['day'] );
+        $conv = new FromJdnConverter( $jdn );
+        return new self( $conv->getYear(), $conv->getMonth(), $conv->getDay() );
     }
 
     /**
@@ -102,7 +103,7 @@ return $this->day; }
      * Convert to Gregorian as a DateTimeImmutable.
      */
     public function toGregorian( string $timezone = 'UTC' ): DateTimeImmutable {
-        $jdn = Calender::ethiopianToJd( $this->month, $this->day, $this->year );
+        $jdn = ( new ToJdnConverter( $this->day, $this->month, $this->year ) )->getJdn();
         [ 'month' => $m, 'day' => $d, 'year' => $y ] = self::jdnToGregorian( $jdn );
         $dateStr                                     = sprintf( '%04d-%02d-%02d', $y, $m, $d );
         return new DateTimeImmutable( $dateStr, new DateTimeZone( $timezone ) );

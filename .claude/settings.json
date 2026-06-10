@@ -37,7 +37,8 @@
       "Bash(rsync -a --exclude=.git --exclude=node_modules --exclude=tests --exclude=*.zip --exclude=.phpunit.result.cache --exclude=phpunit.result.cache --exclude=phpunit.xml --exclude=.phpcs.xml --exclude=.wp-env.json --exclude=package.json --exclude=package-lock.json --exclude=.gitignore --exclude=README.md --exclude=conversion-blog-post-outline.md --exclude=.claude /Users/mac/ethio-cal/ /tmp/binimuse-geez-calendar/)",
       "Read(//private/tmp/**)",
       "Bash(zip -r /Users/mac/ethio-cal/binimuse-geez-calendar.zip binimuse-geez-calendar/)",
-      "Bash(unzip -l /Users/mac/ethio-cal/binimuse-geez-calendar.zip)"
+      "Bash(unzip -l /Users/mac/ethio-cal/binimuse-geez-calendar.zip)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\biniy\\\\EthioCal\" | Where-Object { $_.Extension -eq \".zip\" } | Select-Object Name, Length)"
     ],
     "additionalDirectories": [
       "/Users/mac/ethio-cal/src"
