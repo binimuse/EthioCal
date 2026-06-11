@@ -38,7 +38,8 @@
       "Read(//private/tmp/**)",
       "Bash(zip -r /Users/mac/ethio-cal/binimuse-geez-calendar.zip binimuse-geez-calendar/)",
       "Bash(unzip -l /Users/mac/ethio-cal/binimuse-geez-calendar.zip)",
-      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\biniy\\\\EthioCal\" | Where-Object { $_.Extension -eq \".zip\" } | Select-Object Name, Length)"
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\biniy\\\\EthioCal\" | Where-Object { $_.Extension -eq \".zip\" } | Select-Object Name, Length)",
+      "PowerShell(svn --version --quiet)"
     ],
     "additionalDirectories": [
       "/Users/mac/ethio-cal/src"

@@ -1,0 +1,33 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a3d2e"/>
+      <stop offset="1" stop-color="#0f5a3d"/>
+    </linearGradient>
+    <linearGradient id="cardEdge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#ece8da"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="256" height="256" fill="url(#bg)"/>
+
+  <!-- binding rings -->
+  <rect x="92" y="38" width="14" height="28" rx="7" fill="#0a3d2e"/>
+  <rect x="150" y="38" width="14" height="28" rx="7" fill="#0a3d2e"/>
+
+  <!-- card shadow -->
+  <rect x="48" y="58" width="164" height="156" rx="22" fill="#000000" opacity="0.22"/>
+  <!-- card body -->
+  <rect x="46" y="52" width="164" height="156" rx="22" fill="url(#cardEdge)"/>
+  <!-- header band (rounded top) -->
+  <path d="M 46,74 a 22,22 0 0 1 22,-22 h 120 a 22,22 0 0 1 22,22 v 22 h -164 z" fill="#0e7c4a"/>
+  <!-- tricolor accent line under header -->
+  <rect x="46" y="96"     width="54.7" height="6" fill="#078930"/>
+  <rect x="100.7" y="96"  width="54.7" height="6" fill="#fcdd09"/>
+  <rect x="155.4" y="96"  width="54.6" height="6" fill="#da121a"/>
+
+  <!-- big Geez numeral 1 -->
+  <text x="128" y="190" text-anchor="middle" font-family="Abyssinica SIL" font-size="120" fill="#0a3d2e">&#4969;</text>
+</svg>
